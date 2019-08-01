@@ -1,0 +1,55 @@
+/* pages/category/index.wxss */
+
+/* 高度 等于 视口的高度 - 头部搜索框的高度 
+  calc  100vh  
+  不要less来编译 calc中的代码！！ 
+ */
+
+/* 原样输出 */
+.cate_container {
+  height: ~"calc(100vh - 90rpx)";
+  display: flex;
+  .left_menu {
+    flex: 1;
+    .menu_item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80rpx;
+      font-size: 30rpx;
+    }
+    .active {
+      color: var(--themeColor);
+      border-left: 5rpx solid currentColor;
+    }
+  }
+  .right_content {
+    flex: 3;
+    .goods_group {
+      .goods_title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80rpx;
+        .goods_name {
+          font-size: 30rpx;
+          color: #000;
+          padding: 0 10rpx;
+        }
+      }
+      .goods_list {
+        display: flex;
+        flex-wrap: wrap;
+        navigator {
+          width: 33.33%;
+          text-align: center;
+          image {
+            width: 50%;
+          }
+          .goods_cat_name {
+          }
+        }
+      }
+    }
+  }
+}
