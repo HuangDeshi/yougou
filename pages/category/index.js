@@ -22,15 +22,41 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getCategoryList()
+    const cates = wx.getStorageSync("cates");
+    //判断本地存储是否存在
+    if (!cates) {
+      this.getCategoryList()
+    } else {
+      //缓存时间
+      if (Date.now() - cates.time > 1000 * 10) {
+        this.getCategoryList()
+      } else {
+        //获取缓存数据
+        const catesData = cates.data
+        //赋值给全局
+        this.Cates = catesData
+        const leftMenuList = this.Cates.map(v => ({ cat_id: v.cat_id, cat_name: v.cat_name }))
+        const rightGoodsList = this.Cates[0].children;
+        this.setData({
+          leftMenuList,
+          rightGoodsList
+        })
+      }
+    }
+
+
   },
   // 获取分类页面的接口数据
   getCategoryList() {
     request({ url: "/categories" })
       .then(result => {
+        //获取返回的数据赋值给全局变量
         this.Cates = result;
-        const leftMenuList = result.map(v => ({ cat_id: v.cat_id, cat_name: v.cat_name }))
-        const rightGoodsList = result[0].children;
+        //把数据存入缓存
+        wx.setStorageSync("cates", { time: Date.now(), data: this.Cates });
+
+        const leftMenuList = this.Cates.map(v => ({ cat_id: v.cat_id, cat_name: v.cat_name }))
+        const rightGoodsList = this.Cates[0].children;
         this.setData({
           leftMenuList,
           rightGoodsList
